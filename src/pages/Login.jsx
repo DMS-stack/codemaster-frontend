@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
+import api from '../api'
 
 // Cria instância do axios com base URL do backend
 const api = axios.create({
@@ -33,7 +34,7 @@ export default function Login() {
     localStorage.removeItem('cm_user')
 
     try {
-      const { data } = await axios.post('/api/auth/login', { email, senha })
+      const { data } = await api.post('/auth/login', { email, senha })
       login(data.user, data.token)
       navigate(data.user.tipo === 'admin' || data.user.tipo === 'professor' ? '/admin' : '/dashboard', { replace: true })
     } catch (err) {
