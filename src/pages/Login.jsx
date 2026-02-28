@@ -1,13 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import axios from 'axios'
 import api from '../api'
-
-// Cria instância do axios com base URL do backend
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL // ou process.env.REACT_APP_API_URL se CRA
-})
 
 export default function Login() {
   const [email, setEmail]     = useState('')
@@ -17,7 +11,6 @@ export default function Login() {
   const { login, isAuth, user, loading: authLoading } = useAuth()
   const navigate = useNavigate()
 
-  // Se já está autenticado, redireciona para a área correcta
   useEffect(() => {
     if (!authLoading && isAuth && user) {
       navigate(user.tipo === 'admin' || user.tipo === 'professor' ? '/admin' : '/dashboard', { replace: true })
@@ -29,7 +22,6 @@ export default function Login() {
     setLoading(true)
     setError('')
 
-    // Limpa sessão antiga antes de fazer novo login
     localStorage.removeItem('cm_token')
     localStorage.removeItem('cm_user')
 
