@@ -12,10 +12,10 @@ export default function Login() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!authLoading && isAuth && user) {
+    if (!authLoading && isAuth && user && !error) {
       navigate(user.tipo === 'admin' || user.tipo === 'professor' ? '/admin' : '/dashboard', { replace: true })
     }
-  }, [isAuth, user, authLoading, navigate])
+  }, [isAuth, user, authLoading, error, navigate])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -30,7 +30,7 @@ export default function Login() {
       login(data.user, data.token)
       navigate(data.user.tipo === 'admin' || data.user.tipo === 'professor' ? '/admin' : '/dashboard', { replace: true })
     } catch (err) {
-      setError(err.response?.data?.error || 'Credenciais inválidas. Tente novamente.')
+      setError(err.response?.status === 401 ? 'Email ou senha incorrectos. Verifica os teus dados.' : !err.response ? 'Sem ligação ao servidor. Verifica a tua internet.' : err.response?.data?.error || 'Ocorreu um erro inesperado. Tenta novamente.')
     } finally {
       setLoading(false)
     }
