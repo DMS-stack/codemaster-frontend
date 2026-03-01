@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../api'
 
 const PLANOS = [
   'Primeiro Módulo — 2 meses (10.000 Kz)',
@@ -74,7 +74,7 @@ export default function InscricaoModal({ onClose, inline }) {
     setLoading(true)
     setError('')
     try {
-      const { data } = await axios.post('/api/inscricoes', form)
+      const { data } = await api.post('/inscricoes', form)
       setResult(data)
       setStep(2)
     } catch (err) {
